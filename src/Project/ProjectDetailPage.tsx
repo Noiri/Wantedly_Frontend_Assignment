@@ -1,34 +1,32 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-type Staffs = {
-  staffs: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  };
+type Staff = {
+  id: string;
+  name: string;
+  avatarUrl: string;
 };
 
 type Project = {
-  project: {
-    id: string;
-    title: string;
-    whyDescription: string;
-    whatDescription: string;
-    howDescription: string;
-    imageUrlSmall: string;
-    imageUrlLarge: string;
-    staffs: Staffs[];
-  };
+  id: string;
+  title: string;
+  whyDescription: string;
+  whatDescription: string;
+  howDescription: string;
+  imageUrlSmall: string;
+  imageUrlLarge: string;
+  staffs: Staff[];
 };
 
 type Response = {
-  data: Project;
+  data: {
+    project: Project;
+  };
 };
 
 const ProjectPage: FC = () => {
   // for test
-  const [title, setTitle] = useState("");
+  const [project, setProject] = useState<Project>();
   // 623751
   const { id } = useParams<{ id: string }>();
   const query = new URLSearchParams({
@@ -58,16 +56,32 @@ const ProjectPage: FC = () => {
         .then((data) => data as Response)
         .catch((err) => console.log(err));
       if (resp != null) {
-        console.log(resp.data.project.title);
-        setTitle(resp.data.project.title);
-      } else {
-        setTitle("Not Found.");
+        setProject(resp.data.project);
       }
     };
-    f().catch(() => setTitle("募集が見つかりませんでした."));
-  }, [query, title, setTitle]);
+    f().catch(() => console.log("募集が見つかりませんでした."));
+  }, [query, project, setProject]);
 
-  return <h1>{title}</h1>;
+  return (
+    <>
+      <h1>{project?.title}</h1>
+      <img src={project?.imageUrlLarge} alt={project?.title} width="90%" />
+      <ul style={{ listStyle: "none" }}>
+        {project?.staffs.map((x) => (
+          <li>
+            <img src={x.avatarUrl} alt={x.name} width="250" height="250" />
+            <p>{x.name}</p>
+          </li>
+        ))}
+      </ul>
+      <h2>なにをやっているのか</h2>
+      <p>{project?.whatDescription}</p>
+      <h2>なぜやっているのか</h2>
+      <p>{project?.whyDescription}</p>
+      <h2>こんなことをやります</h2>
+      <p>{project?.howDescription}</p>
+    </>
+  );
 };
 
 export default ProjectPage;
