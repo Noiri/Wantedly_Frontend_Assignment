@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
 import { grey } from "@material-ui/core/colors";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 
 type Staffs = {
   staffs: {
@@ -69,6 +71,16 @@ const useStyles = makeStyles((theme) => ({
     width: "5px",
     height: "30px",
   },
+  header: {
+    backgroundColor: "#313F5C",
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  inputInput: {
+    position: "relative",
+  },
 }));
 
 const ColorButton = withStyles((theme) => ({
@@ -88,7 +100,6 @@ const ColorButton = withStyles((theme) => ({
 
 const ProjectListPage: FC = () => {
   const classes = useStyles();
-  //  const theme = useTheme();
 
   const [projects, setProjects] = useState<Project[]>();
   const [projectList, setProjectList] = useState<Project[]>();
@@ -150,47 +161,55 @@ const ProjectListPage: FC = () => {
     f().catch((err) => console.log(err));
   }, [query]);
 
-  // <a href={`/projects/${x.id}`}> 募集詳細ページへ </a>
-  // { textAlign: "center", padding: "5% 0em 3%" }
   return (
-    <div style={{ margin: "5% 15%" }}>
-      <div style={{ marginBottom: "3%" }}>
-        <input
-          onKeyPress={(e) => (e.key === "Enter" ? onClickHandler() : null)}
-          style={{ width: "95%", height: "30px", lineHeight: "30px" }}
-          ref={refSearchTitle}
-          placeholder="募集を検索する"
-        />
-        <ColorButton onClick={onClickHandler}>
-          <SearchIcon />
-        </ColorButton>
-      </div>
+    <>
+      <AppBar position="static" className={classes.header}>
+        <Toolbar>
+          <Typography className={classes.title} variant="h5">
+            Wantedly Visit
+          </Typography>
+          <input
+            onKeyPress={(e) => (e.key === "Enter" ? onClickHandler() : null)}
+            style={{ width: "30%", height: "30px", lineHeight: "30px" }}
+            ref={refSearchTitle}
+            placeholder="募集を検索する"
+            className={classes.inputInput}
+          />
+          <ColorButton onClick={onClickHandler}>
+            <SearchIcon />
+          </ColorButton>
+        </Toolbar>
+      </AppBar>
+      <div style={{ margin: "2% 15%" }}>
+        <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
 
-      <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
-
-      <div>
-        {projectList !== undefined
-          ? projectList.map((x) => (
-              <Link style={{ textDecoration: "none" }} to={`/projects/${x.id}`}>
-                <Card key={x.id} className={classes.root}>
-                  <CardMedia
-                    className={classes.cover}
-                    image={x.imageUrlSmall}
-                    title={x.title}
-                  />
-                  <div className={classes.details}>
-                    <CardContent className={classes.content}>
-                      <Typography component="h5" variant="h5">
-                        {x.title}
-                      </Typography>
-                    </CardContent>
-                  </div>
-                </Card>
-              </Link>
-            ))
-          : "undefined."}
+        <div>
+          {projectList !== undefined
+            ? projectList.map((x) => (
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/projects/${x.id}`}
+                >
+                  <Card key={x.id} className={classes.root}>
+                    <CardMedia
+                      className={classes.cover}
+                      image={x.imageUrlSmall}
+                      title={x.title}
+                    />
+                    <div className={classes.details}>
+                      <CardContent className={classes.content}>
+                        <Typography component="h5" variant="h5">
+                          {x.title}
+                        </Typography>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </Link>
+              ))
+            : "undefined."}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
