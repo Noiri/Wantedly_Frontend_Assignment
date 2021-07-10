@@ -1,5 +1,5 @@
 import { FC } from "react";
 
-const ProjectListPage: FC = () => <h1>Test Page</h1>;
+const ProjectListPage: FC = () => <p />;
 
 export default ProjectListPage;
