@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router";
 import "./App.css";
 
 import ProjectListPage from "./ProjectList/ProjectListPage";
-import ProjectPage from "./Project/ProjectPage";
+import ProjectPage from "./Project/ProjectDetailPage";
 import NotFoundPage from "./NotFound/NotFoundPage";
 
 const App: FC = () => (
