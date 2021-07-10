@@ -1,4 +1,13 @@
-import { FC, useEffect, useState, useRef, useCallback } from "react";
+import React, { FC, useEffect, useState, useRef, useCallback } from "react";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
+import { Link } from "react-router-dom";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
+import { grey } from "@material-ui/core/colors";
 
 type Staffs = {
   staffs: {
@@ -27,7 +36,60 @@ type Response = {
   data: Projects;
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    marginTop: "15px",
+    height: 100,
+    width: "100%",
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  content: {
+    paddingTop: "4%",
+    paddingBottom: "4%",
+  },
+  cover: {
+    width: 120,
+  },
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  playIcon: {
+    height: 38,
+    width: 38,
+  },
+  button: {
+    marginLeft: "10px",
+    width: "5px",
+    height: "30px",
+  },
+}));
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    width: "4%",
+    minWidth: "4%",
+    color: theme.palette.getContrastText(grey[500]),
+    backgroundColor: grey[500],
+    "&:hover": {
+      backgroundColor: grey[700],
+    },
+    "& > *": {
+      color: "#fffafa",
+    },
+  },
+}))(Button);
+
 const ProjectListPage: FC = () => {
+  const classes = useStyles();
+  //  const theme = useTheme();
+
   const [projects, setProjects] = useState<Project[]>();
   const [projectList, setProjectList] = useState<Project[]>();
 
@@ -59,7 +121,7 @@ const ProjectListPage: FC = () => {
     const keyWord = refSearchTitle.current?.value ?? "";
     if (projects != null && keyWord !== "") {
       const Results: Project[] = projects?.filter(
-        (x) => x.title.indexOf(keyWord) !== -1
+        (x) => x.title.toLowerCase().indexOf(keyWord) !== -1
       );
       if (Results.length === 0) {
         setNotFound(true);
@@ -88,24 +150,47 @@ const ProjectListPage: FC = () => {
     f().catch((err) => console.log(err));
   }, [query]);
 
+  // <a href={`/projects/${x.id}`}> 募集詳細ページへ </a>
+  // { textAlign: "center", padding: "5% 0em 3%" }
   return (
-    <>
-      <input ref={refSearchTitle} placeholder="募集を検索する" />
-      <button type="button" onClick={onClickHandler}>
-        serch
-      </button>
+    <div style={{ margin: "5% 15%" }}>
+      <div style={{ marginBottom: "3%" }}>
+        <input
+          onKeyPress={(e) => (e.key === "Enter" ? onClickHandler() : null)}
+          style={{ width: "95%", height: "30px", lineHeight: "30px" }}
+          ref={refSearchTitle}
+          placeholder="募集を検索する"
+        />
+        <ColorButton onClick={onClickHandler}>
+          <SearchIcon />
+        </ColorButton>
+      </div>
+
       <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
-      <ul style={{ listStyle: "none" }}>
+
+      <div>
         {projectList !== undefined
           ? projectList.map((x) => (
-              <li key={x.id}>
-                <p>{x.title}</p>
-                <img src={x.imageUrlSmall} alt={x.title} />
-              </li>
+              <Link style={{ textDecoration: "none" }} to={`/projects/${x.id}`}>
+                <Card key={x.id} className={classes.root}>
+                  <CardMedia
+                    className={classes.cover}
+                    image={x.imageUrlSmall}
+                    title={x.title}
+                  />
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography component="h5" variant="h5">
+                        {x.title}
+                      </Typography>
+                    </CardContent>
+                  </div>
+                </Card>
+              </Link>
             ))
           : "undefined."}
-      </ul>
-    </>
+      </div>
+    </div>
   );
 };
 

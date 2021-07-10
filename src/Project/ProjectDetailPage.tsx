@@ -27,10 +27,13 @@ type Response = {
 const ProjectPage: FC = () => {
   // for test
   const [project, setProject] = useState<Project>();
-  // 623751
   const { id } = useParams<{ id: string }>();
-  const query = new URLSearchParams({
-    query: `query {
+
+  useEffect(() => {
+    let resp: Response | void;
+
+    const query = new URLSearchParams({
+      query: `query {
     project(id: "${id}") {
       id
       title
@@ -46,10 +49,8 @@ const ProjectPage: FC = () => {
       }
     }
   }`,
-  }).toString();
+    }).toString();
 
-  useEffect(() => {
-    let resp: Response | void;
     const f = async () => {
       resp = await fetch(`http://localhost:4000/graphql?${query}`)
         .then((response) => response.json())
@@ -60,15 +61,20 @@ const ProjectPage: FC = () => {
       }
     };
     f().catch(() => console.log("募集が見つかりませんでした."));
-  }, [query, project, setProject]);
+  }, [id]);
 
   return (
     <>
       <h1>{project?.title}</h1>
-      <img src={project?.imageUrlLarge} alt={project?.title} width="90%" />
+      <img
+        src={project?.imageUrlLarge}
+        alt={project?.title}
+        height="30%"
+        width="100%"
+      />
       <ul style={{ listStyle: "none" }}>
         {project?.staffs.map((x) => (
-          <li>
+          <li key={x.id}>
             <img src={x.avatarUrl} alt={x.name} width="250" height="250" />
             <p>{x.name}</p>
           </li>
