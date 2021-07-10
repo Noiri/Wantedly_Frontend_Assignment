@@ -100,6 +100,7 @@ const ProjectListPage: FC = () => {
           ? projectList.map((x) => (
               <li key={x.id}>
                 <p>{x.title}</p>
+                <a href={`/projects/${x.id}`}> 募集詳細ページへ </a>
                 <img src={x.imageUrlSmall} alt={x.title} />
               </li>
             ))
