@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15px",
     height: 100,
     width: "100%",
+    cursor: "pointer",
+    "&:hover": {
+      transform: "translateY(-2px)",
+      boxShadow: "0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)",
+      opacity: 0.8,
+    },
   },
   details: {
     display: "flex",
