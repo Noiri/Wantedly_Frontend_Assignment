@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 
 type Staffs = {
   staffs: {
@@ -29,6 +29,8 @@ type Response = {
 
 const ProjectListPage: FC = () => {
   const [projects, setProjects] = useState<Project[]>();
+
+  const refSearchTitle = useRef<HTMLInputElement>(null);
 
   const query = new URLSearchParams({
     query: `query {
@@ -66,16 +68,25 @@ const ProjectListPage: FC = () => {
   }, [query]);
 
   return (
-    <ul style={{ listStyle: "none" }}>
-      {projects !== undefined
-        ? projects.map((x) => (
-            <li key={x.id}>
-              <p>{x.title}</p>
-              <img src={x.imageUrlSmall} alt={x.title} />
-            </li>
-          ))
-        : "undefined."}
-    </ul>
+    <>
+      <input ref={refSearchTitle} placeholder="募集を検索する" />
+      <button
+        type="button"
+        onClick={() => console.log(refSearchTitle.current?.value)}
+      >
+        serch
+      </button>
+      <ul style={{ listStyle: "none" }}>
+        {projects !== undefined
+          ? projects.map((x) => (
+              <li key={x.id}>
+                <p>{x.title}</p>
+                <img src={x.imageUrlSmall} alt={x.title} />
+              </li>
+            ))
+          : "undefined."}
+      </ul>
+    </>
   );
 };
 
