@@ -66,7 +66,12 @@ const ProjectPage: FC = () => {
   return (
     <>
       <h1>{project?.title}</h1>
-      <img src={project?.imageUrlLarge} alt={project?.title} width="100%" />
+      <img
+        src={project?.imageUrlLarge}
+        alt={project?.title}
+        height="30%"
+        width="100%"
+      />
       <ul style={{ listStyle: "none" }}>
         {project?.staffs.map((x) => (
           <li key={x.id}>
