@@ -1,10 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Avatar from "@material-ui/core/Avatar";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-
 import { Project } from "../DataType/ProjectType";
 import useStyles from "../CSS/ProjectDetailPageCSS";
 
@@ -56,14 +52,6 @@ const ProjectPage: FC = () => {
 
   return (
     <>
-      <AppBar position="static" className={classes.headerStyle}>
-        <Toolbar>
-          <Typography className={classes.appbarTitle} variant="h5">
-            Wantedly Visit
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
       <h1 className={classes.projectTtile}>{project?.title}</h1>
       <img
         src={project?.imageUrlLarge}
