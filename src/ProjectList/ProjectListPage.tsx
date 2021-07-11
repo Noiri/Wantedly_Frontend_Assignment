@@ -42,18 +42,15 @@ const ProjectListPage: FC = () => {
   }).toString();
 
   useEffect(() => {
-    let resp: Response | void;
-    const f = async () => {
-      resp = await fetch(`http://localhost:4000/graphql?${query}`)
-        .then((response) => response.json())
-        .then((data) => data as Response)
-        .catch((err) => console.log(err));
-      if (resp != null) {
-        setProjects(resp.data.projects);
-        setProjectList(resp.data.projects);
-      }
-    };
-    f().catch((err) => console.log(err));
+    fetch(`http://localhost:4000/graphql?${query}`)
+      .then((response) => response.json())
+      .then((data: Response) => {
+        if (data !== null) {
+          setProjects(data.data.projects);
+          setProjectList(data.data.projects);
+        }
+      })
+      .catch((err) => console.log(err));
   }, [query]);
 
   return (

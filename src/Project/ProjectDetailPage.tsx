@@ -17,8 +17,6 @@ const ProjectPage: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    let resp: Response | void;
-
     const query = new URLSearchParams({
       query: `query {
     project(id: "${id}") {
@@ -38,16 +36,14 @@ const ProjectPage: FC = () => {
   }`,
     }).toString();
 
-    const f = async () => {
-      resp = await fetch(`http://localhost:4000/graphql?${query}`)
-        .then((response) => response.json())
-        .then((data) => data as Response)
-        .catch((err) => console.log(err));
-      if (resp != null) {
-        setProject(resp.data.project);
-      }
-    };
-    f().catch(() => console.log("募集が見つかりませんでした."));
+    fetch(`http://localhost:4000/graphql?${query}`)
+      .then((response) => response.json())
+      .then((data: Response) => {
+        if (data !== null) {
+          setProject(data.data.project);
+        }
+      })
+      .catch((err) => console.log(err));
   }, [id]);
 
   return (
