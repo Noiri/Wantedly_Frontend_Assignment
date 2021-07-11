@@ -1,18 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
-  appbarTitle: {
-    flexGrow: 1,
-  },
-  headerStyle: {
-    backgroundColor: "#313F5C",
-    flexGrow: 1,
-  },
-  searchBox: {
-    width: "30%",
-    height: "30px",
-    lineHeight: "30px",
-  },
   projectListOuterLayout: {
     margin: "2% 15%",
   },

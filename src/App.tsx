@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Route, Switch, Redirect } from "react-router";
-import "./App.css";
 
 import ProjectListPage from "./ProjectList/ProjectListPage";
 import ProjectPage from "./Project/ProjectDetailPage";

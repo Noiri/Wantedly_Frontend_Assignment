@@ -1,20 +1,23 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  appbarTitle: {
-    flexGrow: 1,
-  },
-  headerStyle: {
-    backgroundColor: "#313F5C",
-    flexGrow: 1,
-  },
   projectTtile: {
     marginLeft: "10%",
+  },
+  projectImage: {
+    height: "40%",
+    width: "80%",
+    marginLeft: "10%",
+    marginRight: "10%",
   },
   avatorLayout: {
     display: "flex",
     marginTop: "2%",
     marginLeft: "10%",
+  },
+  avatorStyle: {
+    textAlign: "center",
+    marginLeft: "3%",
   },
   avatorSize: {
     width: theme.spacing(21),
