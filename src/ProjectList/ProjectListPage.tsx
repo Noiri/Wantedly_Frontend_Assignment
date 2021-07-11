@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState, useRef, useCallback } from "react";
+import { FC, useEffect, useState, useRef, useCallback } from "react";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import { Link } from "react-router-dom";
@@ -12,62 +12,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Project } from "../DataType/ProjectType";
 
+import useStyles from "../CSS/ProjectListPageCSS";
+
 type Response = {
   data: {
     projects: Project[];
   };
 };
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    marginTop: "15px",
-    height: 100,
-    width: "100%",
-    cursor: "pointer",
-    "&:hover": {
-      transform: "translateY(-2px)",
-      boxShadow: "0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)",
-      opacity: 0.8,
-    },
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  content: {
-    paddingTop: "4%",
-    paddingBottom: "4%",
-  },
-  cover: {
-    width: 120,
-  },
-  controls: {
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
-  button: {
-    marginLeft: "10px",
-    width: "5px",
-    height: "30px",
-  },
-  header: {
-    backgroundColor: "#313F5C",
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  inputInput: {
-    position: "relative",
-  },
-}));
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -149,51 +100,45 @@ const ProjectListPage: FC = () => {
 
   return (
     <>
-      <AppBar position="static" className={classes.header}>
+      <AppBar position="static" className={classes.headerStyle}>
         <Toolbar>
-          <Typography className={classes.title} variant="h5">
+          <Typography className={classes.appbarTitle} variant="h5">
             Wantedly Visit
           </Typography>
           <input
             onKeyPress={(e) => (e.key === "Enter" ? onClickHandler() : null)}
-            style={{ width: "30%", height: "30px", lineHeight: "30px" }}
             ref={refSearchTitle}
             placeholder="募集を検索する"
-            className={classes.inputInput}
+            className={classes.searchBox}
           />
           <ColorButton onClick={onClickHandler}>
             <SearchIcon />
           </ColorButton>
         </Toolbar>
       </AppBar>
-      <div style={{ margin: "2% 15%" }}>
+      <div className={classes.projectListOuterLayout}>
         <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
 
-        <div>
-          {projectList !== undefined
-            ? projectList.map((x) => (
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={`/projects/${x.id}`}
-                >
-                  <Card key={x.id} className={classes.root}>
-                    <CardMedia
-                      className={classes.cover}
-                      image={x.imageUrlSmall}
-                      title={x.title}
-                    />
-                    <div className={classes.details}>
-                      <CardContent className={classes.content}>
-                        <Typography component="h5" variant="h5">
-                          {x.title}
-                        </Typography>
-                      </CardContent>
-                    </div>
-                  </Card>
-                </Link>
-              ))
-            : "undefined."}
-        </div>
+        {projectList !== undefined
+          ? projectList.map((x) => (
+              <Link style={{ textDecoration: "none" }} to={`/projects/${x.id}`}>
+                <Card key={x.id} className={classes.projectCardStyle}>
+                  <CardMedia
+                    className={classes.projectImage}
+                    image={x.imageUrlSmall}
+                    title={x.title}
+                  />
+                  <div>
+                    <CardContent className={classes.projectTitleLayout}>
+                      <Typography component="h5" variant="h5">
+                        {x.title}
+                      </Typography>
+                    </CardContent>
+                  </div>
+                </Card>
+              </Link>
+            ))
+          : "undefined."}
       </div>
     </>
   );
