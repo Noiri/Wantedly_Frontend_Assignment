@@ -1,15 +1,14 @@
-import { FC, useEffect, useState, useRef, useCallback } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { FC, useEffect, useState, useRef } from "react";
 import Typography from "@material-ui/core/Typography";
-import SearchIcon from "@material-ui/icons/Search";
-import Button from "@material-ui/core/Button";
-import { grey } from "@material-ui/core/colors";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Project } from "../DataType/ProjectType";
 
 import useStyles from "../CSS/ProjectListPageCSS";
 import ProjectCard from "./ProjectCard";
+import SearchBox from "./SearchBox";
+import useSearchProject from "../CustomHooks/useSearchProject";
+import SearchButton from "./SearchButton";
 
 type Response = {
   data: {
@@ -17,27 +16,10 @@ type Response = {
   };
 };
 
-const ColorButton = withStyles((theme) => ({
-  root: {
-    width: "4%",
-    minWidth: "4%",
-    color: theme.palette.getContrastText(grey[500]),
-    backgroundColor: grey[500],
-    "&:hover": {
-      backgroundColor: grey[700],
-    },
-    "& > *": {
-      color: "#fffafa",
-    },
-  },
-}))(Button);
-
 const ProjectListPage: FC = () => {
   const classes = useStyles();
-
-  const [projects, setProjects] = useState<Project[]>();
-  const [projectList, setProjectList] = useState<Project[]>();
-
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [projectList, setProjectList] = useState<Project[]>([]);
   // 募集が1件も引っかからなかったときにtrue
   const [notFound, setNotFound] = useState(false);
 
@@ -62,23 +44,7 @@ const ProjectListPage: FC = () => {
   }`,
   }).toString();
 
-  const onClickHandler = useCallback(() => {
-    const keyWord = refSearchTitle.current?.value ?? "";
-    if (projects != null && keyWord !== "") {
-      const Results: Project[] = projects?.filter(
-        (x) => x.title.toLowerCase().indexOf(keyWord) !== -1
-      );
-      if (Results.length === 0) {
-        setNotFound(true);
-      } else {
-        setNotFound(false);
-      }
-      setProjectList(Results);
-    } else {
-      setNotFound(false);
-      setProjectList(projects);
-    }
-  }, [projects]);
+  const searchProject = useSearchProject(projects, setProjectList, setNotFound);
 
   useEffect(() => {
     let resp: Response | void;
@@ -102,15 +68,14 @@ const ProjectListPage: FC = () => {
           <Typography className={classes.appbarTitle} variant="h5">
             Wantedly Visit
           </Typography>
-          <input
-            onKeyPress={(e) => (e.key === "Enter" ? onClickHandler() : null)}
-            ref={refSearchTitle}
-            placeholder="募集を検索する"
-            className={classes.searchBox}
+          <SearchBox
+            refSearchTitle={refSearchTitle}
+            searchProject={searchProject}
           />
-          <ColorButton onClick={onClickHandler}>
-            <SearchIcon />
-          </ColorButton>
+          <SearchButton
+            refSearchTitle={refSearchTitle}
+            searchProject={searchProject}
+          />
         </Toolbar>
       </AppBar>
       <div className={classes.projectListOuterLayout}>
