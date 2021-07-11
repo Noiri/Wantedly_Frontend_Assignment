@@ -1,14 +1,10 @@
 import { FC, useEffect, useState, useRef } from "react";
-import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import { Project } from "../DataType/ProjectType";
 
 import useStyles from "../CSS/ProjectListPageCSS";
+import Header from "../Header/Header";
 import ProjectCard from "./ProjectCard";
-import SearchBox from "./SearchBox";
 import useSearchProject from "../CustomHooks/useSearchProject";
-import SearchButton from "./SearchButton";
 
 type Response = {
   data: {
@@ -24,6 +20,7 @@ const ProjectListPage: FC = () => {
   const [notFound, setNotFound] = useState(false);
 
   const refSearchTitle = useRef<HTMLInputElement>(null);
+  const searchProject = useSearchProject(projects, setProjectList, setNotFound);
 
   const query = new URLSearchParams({
     query: `query {
@@ -44,8 +41,6 @@ const ProjectListPage: FC = () => {
   }`,
   }).toString();
 
-  const searchProject = useSearchProject(projects, setProjectList, setNotFound);
-
   useEffect(() => {
     let resp: Response | void;
     const f = async () => {
@@ -63,21 +58,11 @@ const ProjectListPage: FC = () => {
 
   return (
     <>
-      <AppBar position="static" className={classes.headerStyle}>
-        <Toolbar>
-          <Typography className={classes.appbarTitle} variant="h5">
-            Wantedly Visit
-          </Typography>
-          <SearchBox
-            refSearchTitle={refSearchTitle}
-            searchProject={searchProject}
-          />
-          <SearchButton
-            refSearchTitle={refSearchTitle}
-            searchProject={searchProject}
-          />
-        </Toolbar>
-      </AppBar>
+      <Header
+        refSearchTitle={refSearchTitle}
+        searchProject={searchProject}
+        isSearchBox
+      />
       <div className={classes.projectListOuterLayout}>
         <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
         {projectList !== undefined
