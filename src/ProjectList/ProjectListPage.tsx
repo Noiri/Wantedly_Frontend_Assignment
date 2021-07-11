@@ -10,32 +10,12 @@ import Button from "@material-ui/core/Button";
 import { grey } from "@material-ui/core/colors";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-
-type Staffs = {
-  staffs: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  };
-};
-
-type Project = {
-  id: string;
-  title: string;
-  whyDescription: string;
-  whatDescription: string;
-  howDescription: string;
-  imageUrlSmall: string;
-  imageUrlLarge: string;
-  staffs: Staffs[];
-};
-
-type Projects = {
-  projects: Project[];
-};
+import { Project } from "../DataType/ProjectType";
 
 type Response = {
-  data: Projects;
+  data: {
+    projects: Project[];
+  };
 };
 
 const useStyles = makeStyles((theme) => ({
