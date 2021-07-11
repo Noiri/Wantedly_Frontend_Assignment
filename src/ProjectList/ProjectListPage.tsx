@@ -11,12 +11,10 @@ import { grey } from "@material-ui/core/colors";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 
-type Staffs = {
-  staffs: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  };
+type Staff = {
+  id: string;
+  name: string;
+  avatarUrl: string;
 };
 
 type Project = {
@@ -27,15 +25,13 @@ type Project = {
   howDescription: string;
   imageUrlSmall: string;
   imageUrlLarge: string;
-  staffs: Staffs[];
-};
-
-type Projects = {
-  projects: Project[];
+  staffs: Staff[];
 };
 
 type Response = {
-  data: Projects;
+  data: {
+    projects: Project[];
+  };
 };
 
 const useStyles = makeStyles((theme) => ({
