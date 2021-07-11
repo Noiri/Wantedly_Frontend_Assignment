@@ -4,6 +4,12 @@ const useStyles = makeStyles((theme) => ({
   projectTtile: {
     marginLeft: "10%",
   },
+  projectImage: {
+    height: "40%",
+    width: "80%",
+    marginLeft: "10%",
+    marginRight: "10%",
+  },
   avatorLayout: {
     display: "flex",
     marginTop: "2%",
