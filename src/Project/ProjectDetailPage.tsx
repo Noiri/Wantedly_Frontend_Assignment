@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import Avatar from "@material-ui/core/Avatar";
 import { Project } from "../DataType/ProjectType";
 import useStyles from "../CSS/ProjectDetailPageCSS";
 import useProjectDetailAPI from "../CustomHooks/usePorjectDetailAPI";
+import Avator from "./Avator";
 
 const ProjectPage: FC = () => {
   const classes = useStyles();
@@ -25,15 +25,8 @@ const ProjectPage: FC = () => {
         width="80%"
       />
       <div className={classes.avatorLayout}>
-        {project?.staffs.map((x) => (
-          <div key={x.id} className={classes.avatorStyle}>
-            <Avatar
-              alt={x.name}
-              src={x.avatarUrl}
-              className={classes.avatorSize}
-            />
-            <p>{x.name}</p>
-          </div>
+        {project?.staffs.map((staff) => (
+          <Avator staff={staff} />
         ))}
       </div>
       <div className={classes.descriptionLayout}>

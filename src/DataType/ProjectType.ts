@@ -1,4 +1,4 @@
-type Staff = {
+export type Staff = {
   id: string;
   name: string;
   avatarUrl: string;
