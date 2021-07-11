@@ -5,12 +5,7 @@ import useStyles from "../CSS/ProjectListPageCSS";
 import Header from "../Header/Header";
 import ProjectCard from "./ProjectCard";
 import useSearchProject from "../CustomHooks/useSearchProject";
-
-type Response = {
-  data: {
-    projects: Project[];
-  };
-};
+import useProjectListAPI from "../CustomHooks/useProjectListAPI";
 
 const ProjectListPage: FC = () => {
   const classes = useStyles();
@@ -22,36 +17,10 @@ const ProjectListPage: FC = () => {
   const refSearchTitle = useRef<HTMLInputElement>(null);
   const searchProject = useSearchProject(projects, setProjectList, setNotFound);
 
-  const query = new URLSearchParams({
-    query: `query {
-    projects {
-      id
-      title
-      whyDescription
-      whatDescription
-      howDescription
-      imageUrlSmall
-      imageUrlLarge
-      staffs {
-        id
-        name
-        avatarUrl
-      }
-    }
-  }`,
-  }).toString();
-
+  const projectListAPI = useProjectListAPI(setProjects, setProjectList);
   useEffect(() => {
-    fetch(`http://localhost:4000/graphql?${query}`)
-      .then((response) => response.json())
-      .then((data: Response) => {
-        if (data !== null) {
-          setProjects(data.data.projects);
-          setProjectList(data.data.projects);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [query]);
+    projectListAPI();
+  }, [projectListAPI]);
 
   return (
     <>

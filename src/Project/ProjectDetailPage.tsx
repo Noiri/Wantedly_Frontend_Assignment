@@ -3,48 +3,16 @@ import { useParams } from "react-router";
 import Avatar from "@material-ui/core/Avatar";
 import { Project } from "../DataType/ProjectType";
 import useStyles from "../CSS/ProjectDetailPageCSS";
-
-type Response = {
-  data: {
-    project: Project;
-  };
-};
+import useProjectDetailAPI from "../CustomHooks/usePorjectDetailAPI";
 
 const ProjectPage: FC = () => {
   const classes = useStyles();
-
   const [project, setProject] = useState<Project>();
   const { id } = useParams<{ id: string }>();
-
+  const projectDetailAPI = useProjectDetailAPI(setProject);
   useEffect(() => {
-    const query = new URLSearchParams({
-      query: `query {
-    project(id: "${id}") {
-      id
-      title
-      whyDescription
-      whatDescription
-      howDescription
-      imageUrlSmall
-      imageUrlLarge
-      staffs {
-        id
-        name
-        avatarUrl
-      }
-    }
-  }`,
-    }).toString();
-
-    fetch(`http://localhost:4000/graphql?${query}`)
-      .then((response) => response.json())
-      .then((data: Response) => {
-        if (data !== null) {
-          setProject(data.data.project);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
+    projectDetailAPI(id);
+  }, [projectDetailAPI, id]);
 
   return (
     <>
