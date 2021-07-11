@@ -26,7 +26,7 @@ const ProjectPage: FC = () => {
       />
       <div className={classes.avatorLayout}>
         {project?.staffs.map((x) => (
-          <div key={x.id} style={{ textAlign: "center", marginLeft: "3%" }}>
+          <div key={x.id} className={classes.avatorStyle}>
             <Avatar
               alt={x.name}
               src={x.avatarUrl}

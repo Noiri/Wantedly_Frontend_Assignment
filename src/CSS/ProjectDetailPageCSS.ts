@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2%",
     marginLeft: "10%",
   },
+  avatorStyle: {
+    textAlign: "center",
+    marginLeft: "3%",
+  },
   avatorSize: {
     width: theme.spacing(21),
     height: theme.spacing(21),
