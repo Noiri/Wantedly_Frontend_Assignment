@@ -1,13 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from "@material-ui/core/styles";
-
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
 import { Project } from "../DataType/ProjectType";
+import useStyles from "../CSS/ProjectDetailPageCSS";
 
 type Response = {
   data: {
@@ -15,29 +14,9 @@ type Response = {
   };
 };
 
-const useStyles = makeStyles((theme) => ({
-  avator: {
-    display: "flex",
-    marginTop: "2%",
-    marginLeft: "10%",
-  },
-  large: {
-    width: theme.spacing(21),
-    height: theme.spacing(21),
-  },
-  header: {
-    backgroundColor: "#313F5C",
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
 const ProjectPage: FC = () => {
   const classes = useStyles();
 
-  // for test
   const [project, setProject] = useState<Project>();
   const { id } = useParams<{ id: string }>();
 
@@ -77,15 +56,15 @@ const ProjectPage: FC = () => {
 
   return (
     <>
-      <AppBar position="static" className={classes.header}>
+      <AppBar position="static" className={classes.headerStyle}>
         <Toolbar>
-          <Typography className={classes.title} variant="h5">
+          <Typography className={classes.appbarTitle} variant="h5">
             Wantedly Visit
           </Typography>
         </Toolbar>
       </AppBar>
 
-      <h1 style={{ marginLeft: "10%" }}>{project?.title}</h1>
+      <h1 className={classes.projectTtile}>{project?.title}</h1>
       <img
         src={project?.imageUrlLarge}
         alt={project?.title}
@@ -93,17 +72,19 @@ const ProjectPage: FC = () => {
         height="40%"
         width="80%"
       />
-      <div className={classes.avator}>
+      <div className={classes.avatorLayout}>
         {project?.staffs.map((x) => (
           <div key={x.id} style={{ textAlign: "center", marginLeft: "3%" }}>
-            <Avatar alt={x.name} src={x.avatarUrl} className={classes.large} />
+            <Avatar
+              alt={x.name}
+              src={x.avatarUrl}
+              className={classes.avatorSize}
+            />
             <p>{x.name}</p>
           </div>
         ))}
       </div>
-      <div
-        style={{ marginLeft: "10%", marginRight: "10%", marginBottom: "8%" }}
-      >
+      <div className={classes.descriptionLayout}>
         <h2>なにをやっているのか</h2>
         <p>{project?.whatDescription}</p>
         <h2>なぜやっているのか</h2>
