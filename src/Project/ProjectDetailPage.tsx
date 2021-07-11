@@ -7,22 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
-type Staff = {
-  id: string;
-  name: string;
-  avatarUrl: string;
-};
-
-type Project = {
-  id: string;
-  title: string;
-  whyDescription: string;
-  whatDescription: string;
-  howDescription: string;
-  imageUrlSmall: string;
-  imageUrlLarge: string;
-  staffs: Staff[];
-};
+import { Project } from "../DataType/ProjectType";
 
 type Response = {
   data: {
