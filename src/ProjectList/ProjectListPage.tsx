@@ -32,7 +32,9 @@ const ProjectListPage: FC = () => {
       <div className={classes.projectListOuterLayout}>
         <p>{notFound ? "お探しの募集は見つかりませんでした." : ""}</p>
         {projectList !== undefined
-          ? projectList.map((project) => <ProjectCard project={project} />)
+          ? projectList.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))
           : "undefined."}
       </div>
     </>

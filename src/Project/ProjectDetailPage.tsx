@@ -4,6 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { Project } from "../DataType/ProjectType";
 import useStyles from "../CSS/ProjectDetailPageCSS";
 import useProjectDetailAPI from "../CustomHooks/usePorjectDetailAPI";
+import NotFoundPage from "../NotFound/NotFoundPage";
 
 const ProjectPage: FC = () => {
   const classes = useStyles();
@@ -22,13 +23,13 @@ const ProjectPage: FC = () => {
     projectDetailAPI(id);
   }, [projectDetailAPI, id]);
 
-  if (project !== undefined) {
+  if (project !== undefined && project !== null) {
     img.src = project.imageUrlLarge;
   }
 
   return (
     <>
-      {project !== undefined ? (
+      {project !== null ? (
         <>
           <h1 className={classes.projectTtile}>{project?.title}</h1>
           {isLoading ? (
@@ -71,7 +72,7 @@ const ProjectPage: FC = () => {
           </div>
         </>
       ) : (
-        ""
+        <NotFoundPage />
       )}
     </>
   );
